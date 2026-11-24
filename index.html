@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#321078"><title>بودا للتعليم</title>
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icons/icon-192.png">
+<style>
+:root{--p:#321078;--p2:#6d28d9;--gold:#f4c95d;--bg:#f6f3fc;--ink:#21163b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(135deg,#21065e,#5420a8);color:white;padding:22px 18px 26px;border-radius:0 0 25px 25px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;background:#fff2c8;color:#321078;display:grid;place-items:center;font-size:25px}
+h1{font-size:22px;margin:0}header p{margin:6px 0 0;color:#e8dcff;font-size:13px}
+main{padding:16px;max-width:820px;margin:auto}.welcome,.panel{background:white;border-radius:18px;padding:16px;box-shadow:0 4px 16px #28105b0c}
+.welcome{margin-top:-8px}.muted{color:#786c8c;font-size:13px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:15px 0}
+.tile{background:white;border:1px solid #eee6fa;border-radius:17px;padding:15px;text-align:right;min-height:100px;cursor:pointer;color:var(--ink);font:inherit}
+.tile .ico{font-size:25px}.tile b{display:block;margin:7px 0 4px}.tile small{color:#786c8c}
+.panel{margin:13px 0}h2{font-size:18px;margin:0 0 12px;color:var(--p)}h3{font-size:15px;color:#51249a;margin:16px 0 8px}
+.group{border:1px solid #eee6fa;border-radius:14px;padding:10px;margin:9px 0}
+.subjects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.subject{padding:11px;border:1px solid #eee6fa;border-radius:12px;background:#fcfaff;text-align:right;cursor:pointer;color:var(--ink);font:inherit}
+button,.btn{border:0;background:var(--p2);color:white;border-radius:12px;padding:12px 15px;font:inherit;font-weight:bold;cursor:pointer}
+.secondary{background:#efe7fb;color:var(--p)}input,textarea,select{width:100%;padding:12px;border:1px solid #ddd2ef;border-radius:12px;font:inherit;margin:6px 0 10px;background:white}
+textarea{min-height:95px;resize:vertical}.filebox{border:2px dashed #c9b6e8;border-radius:15px;padding:15px;text-align:center;background:#fbf8ff}
+.item{padding:11px 0;border-bottom:1px solid #f0ebf7}.item:last-child{border:0}
+footer{text-align:center;color:#8b7e9f;font-size:12px;padding:18px}
+nav{position:sticky;bottom:0;background:#fff;border-top:1px solid #eee6fa;display:flex;justify-content:space-around;padding:8px}
+nav button{background:transparent;color:var(--p);padding:7px;font-size:12px}
+.hidden{display:none}.tag{display:inline-block;background:#fff1c9;color:#684700;padding:5px 9px;border-radius:20px;font-size:11px}
+</style></head>
+<body>
+<header><div class="brand"><div class="logo">📚</div><div><h1>بودا للتعليم</h1><p>الثانوية الأزهرية 2027 • الشعبة العلمية</p></div></div></header>
+<main>
+<div class="welcome"><span class="tag">النسخة التجريبية المطوّرة</span><p><b>أهلاً بيك في بودا للتعليم 👋</b></p><div class="muted">كل المواد في مكان واحد. افتح المادة وسجّل الدروس والملخصات والأسئلة الخاصة بها.</div></div>
+<div class="grid">
+<button class="tile" onclick="show('files')"><span class="ico">📁</span><b>ملفاتي</b><small>إضافة ملفات المذاكرة</small></button>
+<button class="tile" onclick="show('summaries')"><span class="ico">📝</span><b>ملخصاتي</b><small>كتابة وحفظ الملخصات</small></button>
+<button class="tile" onclick="show('exams')"><span class="ico">📋</span><b>الامتحانات</b><small>تدريب على الأسئلة</small></button>
+<button class="tile" onclick="show('lessons')"><span class="ico">🎓</span><b>الدروس</b><small>تنظيم شرح وملاحظات الدروس</small></button>
+</div>
+<section class="panel" id="home"><h2>📚 جميع المواد الدراسية</h2><div id="subjectList"></div><p class="muted">قد تختلف أسماء الفروع أو توزيعها حسب الخطة الرسمية للعام الدراسي؛ يمكن تعديل القائمة من داخل الكود عند صدور الجدول المعتمد.</p></section>
+<section class="panel hidden" id="files"><h2>📁 ملفاتي</h2><p class="muted">اختر ملفات PDF أو صوراً. النسخة الحالية تسجل أسماء الملفات محلياً فقط؛ لا ترفعها إلى خادم ولا تحلل محتواها تلقائياً بعد.</p><div class="filebox"><input id="upload" type="file" accept=".pdf,image/*" multiple><button onclick="saveFiles()">إضافة الملفات</button></div><div id="fileList"></div></section>
+<section class="panel hidden" id="summaries"><h2>📝 ملخصاتي</h2><label>المادة</label><select id="sumSubject"></select><input id="sumTitle" placeholder="عنوان الملخص"><textarea id="sumText" placeholder="اكتب أو الصق الملخص هنا"></textarea><button onclick="saveSummary()">حفظ الملخص</button><div id="sumList"></div></section>
+<section class="panel hidden" id="exams"><h2>📋 بنك الأسئلة والتدريب</h2><p class="muted">أضف أسئلة للمراجعة. هذه النسخة لا تنشئ امتحاناً آلياً من الملفات حتى يتم ربط خدمة ذكاء اصطناعي آمنة.</p><select id="qSubject"></select><input id="q" placeholder="اكتب السؤال"><input id="a" placeholder="الإجابة الصحيحة"><button onclick="saveQuestion()">حفظ السؤال</button><div id="qList"></div></section>
+<section class="panel hidden" id="lessons"><h2>🎓 سجل الدروس</h2><select id="lessonSubject"></select><input id="lessonTitle" placeholder="اسم الدرس"><textarea id="lessonNotes" placeholder="اكتب ما تريد مراجعته أو فهمه"></textarea><button onclick="saveLesson()">حفظ الدرس</button><div id="lessonList"></div></section>
+</main>
+<nav><button onclick="show('home')">🏠 الرئيسية</button><button onclick="show('files')">📁 ملفاتي</button><button onclick="show('exams')">📋 الأسئلة</button><button onclick="show('summaries')">📝 الملخصات</button></nav>
+<footer>بودا للتعليم • نسخة أولية قابلة للتطوير</footer>
+<script>
+const SUBJECTS={"المواد الشرعية": ["القرآن الكريم", "التفسير", "الحديث", "التوحيد", "الفقه"], "المواد العربية": ["النحو", "الصرف", "البلاغة", "الأدب والنصوص", "المطالعة والإنشاء"], "اللغة الأجنبية": ["اللغة الإنجليزية"], "المواد العلمية": ["الفيزياء", "الكيمياء", "الأحياء", "الجبر والهندسة الفراغية", "التفاضل والتكامل", "الاستاتيكا", "الديناميكا"]};
+const $=id=>document.getElementById(id);
+const read=k=>JSON.parse(localStorage.getItem('boda_'+k)||'[]');
+const write=(k,v)=>localStorage.setItem('boda_'+k,JSON.stringify(v));
+function allSubjects(){return Object.values(SUBJECTS).flat()}
+function opts(){return allSubjects().map(s=>`<option>${s}</option>`).join('')}
+$('subjectList').innerHTML=Object.entries(SUBJECTS).map(([g,arr])=>`<div class="group"><h3>${g}</h3><div class="subjects">${arr.map(s=>`<button class="subject" onclick="pickSubject('${s}')">📘 ${s}</button>`).join('')}</div></div>`).join('');
+['sumSubject','qSubject','lessonSubject'].forEach(id=>$(id).innerHTML=opts());
+function show(id){['home','files','summaries','exams','lessons'].forEach(x=>$(x).classList.toggle('hidden',x!==id))}
+function pickSubject(s){$('lessonSubject').value=s;$('sumSubject').value=s;$('qSubject').value=s;show('lessons')}
+function saveFiles(){let fs=[...($('upload').files||[])];if(!fs.length)return alert('اختار ملفاً أولاً');let a=read('files');fs.forEach(f=>a.push({name:f.name,size:f.size,date:new Date().toLocaleDateString('ar-EG')}));write('files',a);$('upload').value='';render()}
+function saveSummary(){let t=$('sumTitle').value.trim(),v=$('sumText').value.trim();if(!t||!v)return alert('اكتب العنوان والملخص');let a=read('sums');a.unshift({s:$('sumSubject').value,t,v});write('sums',a);$('sumTitle').value='';$('sumText').value='';render()}
+function saveQuestion(){let q=$('q').value.trim(),a=$('a').value.trim();if(!q||!a)return alert('اكتب السؤال والإجابة');let x=read('qs');x.unshift({s:$('qSubject').value,q,a});write('qs',x);$('q').value='';$('a').value='';render()}
+function saveLesson(){let t=$('lessonTitle').value.trim();if(!t)return alert('اكتب اسم الدرس');let x=read('lessons');x.unshift({s:$('lessonSubject').value,t,n:$('lessonNotes').value});write('lessons',x);$('lessonTitle').value='';$('lessonNotes').value='';render()}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+$('fileList').innerHTML=read('files').map(x=>`<div class="item">📄 ${esc(x.name)} <span class="muted">(${Math.max(1,Math.round(x.size/1024))} KB)</span></div>`).join('');
+$('sumList').innerHTML=read('sums').map(x=>`<div class="item"><b>${esc(x.s)} — ${esc(x.t)}</b><div class="muted">${esc(x.v)}</div></div>`).join('');
+$('qList').innerHTML=read('qs').map((x,i)=>`<div class="item"><b>${i+1}. ${esc(x.s)}: ${esc(x.q)}</b><details><summary>إظهار الإجابة</summary>${esc(x.a)}</details></div>`).join('');
+$('lessonList').innerHTML=read('lessons').map(x=>`<div class="item"><b>${esc(x.s)} — ${esc(x.t)}</b><div class="muted">${esc(x.n)}</div></div>`).join('');
+}
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script></body></html>
